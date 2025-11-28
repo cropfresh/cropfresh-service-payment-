@@ -3,16 +3,20 @@ import { PaymentServiceHandlers } from '../../protos/cropfresh/payment/PaymentSe
 import { Logger } from 'pino';
 
 export const paymentServiceHandlers = (logger: Logger): PaymentServiceHandlers => ({
-  ProcessPayment: (call, callback) => {
-    logger.info('ProcessPayment called');
-    callback(null, { transactionId: 'txn-1', status: 'SUCCESS' });
+  InitiatePayment: (call, callback) => {
+    logger.info('InitiatePayment called');
+    callback(null, { paymentId: 'pay-1', paymentUrl: 'http://pay.com/1', transactionId: 'txn-1' });
   },
-  GetPaymentStatus: (call, callback) => {
-    logger.info('GetPaymentStatus called');
-    callback(null, { transactionId: call.request.transactionId, status: 'SUCCESS' });
+  VerifyPayment: (call, callback) => {
+    logger.info('VerifyPayment called');
+    callback(null, { success: true, status: 'success', timestamp: new Date().toISOString() });
   },
-  RefundPayment: (call, callback) => {
-    logger.info('RefundPayment called');
-    callback(null, { transactionId: call.request.transactionId, status: 'REFUNDED' });
+  ProcessRefund: (call, callback) => {
+    logger.info('ProcessRefund called');
+    callback(null, { success: true, refundId: 'ref-1', estimatedArrival: '2023-11-01' });
+  },
+  GetTransactionHistory: (call, callback) => {
+    logger.info('GetTransactionHistory called');
+    callback(null, { transactions: [], total: 0 });
   }
 });
